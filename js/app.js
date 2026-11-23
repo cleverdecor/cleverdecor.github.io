@@ -32,3 +32,54 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
+
+
+// Яндекс Форма
+(() => {
+  const yandexFormUrl =
+    'https://forms.yandex.ru/u/6b00589d974ab2a4b73b74e2?iframe=1';
+
+  const modal = document.querySelector('[data-modal]');
+  const frame = document.querySelector('[data-yandex-frame]');
+
+  const openButtons = document.querySelectorAll('[data-open-form]');
+  const closeButtons = document.querySelectorAll('[data-close-form]');
+
+  if (!modal || !frame) return;
+
+  const openModal = () => {
+    frame.src = yandexFormUrl;
+    modal.classList.add('is-open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeModal = () => {
+    modal.classList.remove('is-open');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    frame.src = '';
+  };
+
+  openButtons.forEach(button => {
+    button.addEventListener('click', openModal);
+  });
+
+  closeButtons.forEach(button => {
+    button.addEventListener('click', closeModal);
+  });
+
+  // Закрытие при клике на затемнённый фон
+  modal.addEventListener('click', event => {
+    if (event.target === modal) {
+      closeModal();
+    }
+  });
+
+  // Закрытие клавишей Escape
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') {
+      closeModal();
+    }
+  });
+})();
